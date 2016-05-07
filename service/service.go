@@ -84,14 +84,12 @@ func (s *Service) MakeHandler(fn Handler) httprouter.Handle {
 		startTime := time.Now()
 		out, err := fn(resp, req, params)
 		if err != nil {
-			log.WithFields(log.Fields{
-				"err": err,
-			}).Error("Interal Error")
+			log.WithError(err).Error("Internal Error")
 			panic(err)
 		}
 		outContent, err := json.Marshal(out)
 		if err != nil {
-			log.WithFields(log.Fields{"err": err}).Error("Failed to Marshal output json")
+			log.WithError(err).Error("Failed to Marshal output json")
 			panic(err)
 		}
 		resp.Write(outContent)

@@ -64,7 +64,7 @@ code | Y | string | 用户提交的验证码
 
 错误码|错误描述
 ------|-------
-limit_control | 触发流控限制，短时间内同一手机多次获取验证码 
+limit_control | 触发流控限制，短时间内同一手机多次尝试验证 
 token_invalid | token值不正确
 code_invalid | 验证码值不正确
 code_expire | 验证码已经失效
