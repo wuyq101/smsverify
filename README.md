@@ -22,7 +22,7 @@ POST /sms/code/send
 ----|----|----|----
 phone | Y | string | 接收验证码的手机号码
 template_code | Y | string | 短信模板号
-params | Y | json | 发送验证码短信所需的其他参数，json格式，具体参数由短信通道决定
+sms_param | Y | json | 发送验证码短信所需的其他参数，json格式，具体参数由短信通道决定
 
 成功时候返回结果示例：
 
@@ -39,6 +39,7 @@ params | Y | json | 发送验证码短信所需的其他参数，json格式，�
 错误码|错误描述
 ------|-------
 limit_control | 触发流控限制，短时间内同一手机多次获取验证码 
+sms_server_err | 短信通道异常，发送失败
 
 
 

@@ -11,6 +11,9 @@ type Config struct {
 	RedisSentinelAddrs []string `json:"redis_sentinel_addrs"`
 	SmsFreqLimit       int64    `json:"sms_freq_limit"` //一个手机号每小时最多可以下发的条数
 	SmsCodeLen         int64    `json:"sms_code_len"`   //短信验证码长度
+	AliAppKey          string   `json:"ali_app_key"`
+	AliAppSecret       string   `json:"ali_app_secret"`
+	AliSmsFreeSignName string   `json:"ali_sms_free_sign_name"`
 }
 
 var conf *Config

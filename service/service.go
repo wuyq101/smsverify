@@ -138,6 +138,16 @@ func (s *Service) SendCode(w http.ResponseWriter, r *http.Request, _ httprouter.
 	if len(templateCode) == 0 {
 		return s.fail("miss required parameter template_code"), nil
 	}
+	smsParam := r.FormValue("sms_param")
+	if len(smsParam) == 0 {
+		return s.fail("miss required parameter sms_param"), nil
+	}
+	kvs := make(map[string]string)
+	err := json.Unmarshal([]byte(smsParam), &kvs)
+	if err != nil {
+		log.WithError(err).Error("Failed to unmarshal json")
+		return s.fail("sms_param is invalid json"), nil
+	}
 	//check send frequence
 	overLimit, err := s.sms.CheckSendCodeLimit(phone, templateCode)
 	if err != nil {
@@ -167,6 +177,20 @@ func (s *Service) SendCode(w http.ResponseWriter, r *http.Request, _ httprouter.
 		"token": token,
 	}).Info("Generate sms verify code")
 	//TODO send code to phone by third party service
+	ok, err := s.sms.SendSms(phone, templateCode, code, kvs)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"phone":         phone,
+			"template_code": templateCode,
+			"code":          code,
+			"token":         token,
+			"err":           err,
+		}).Error("Failed to send sms.")
+		return nil, err
+	}
+	if !ok {
+		return s.failWithStatus("sms_server_err", "短信通道异常，发送失败"), nil
+	}
 	//return the result
 	data := map[string]interface{}{
 		"token": token,

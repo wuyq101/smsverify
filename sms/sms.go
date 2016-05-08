@@ -13,6 +13,7 @@ import (
 
 type Sms struct {
 	redisClient *redis.Client
+	sender      SmsSender
 }
 
 const (
@@ -22,6 +23,7 @@ const (
 func NewSms(redisClient *redis.Client) *Sms {
 	return &Sms{
 		redisClient: redisClient,
+		sender:      NewAliSmsSender(),
 	}
 }
 
@@ -113,4 +115,8 @@ func (s *Sms) generateCode() string {
 	max := int64(math.Pow(10, float64(codeLen)))
 	rand.Seed(time.Now().UnixNano())
 	return fmt.Sprintf("%0"+strconv.FormatInt(codeLen, 10)+"d", rand.Int63n(max))
+}
+
+func (s *Sms) SendSms(phone, templateCode, code string, smsParam map[string]string) (bool, error) {
+	return s.sender.Send(phone, templateCode, code, smsParam)
 }
