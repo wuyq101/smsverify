@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestCall(t *testing.T) {
+func TestSign(t *testing.T) {
 	sender := &AliSmsSender{
 		AppSecret: "helloworld",
 	}
