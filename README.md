@@ -1,10 +1,35 @@
 # Sms verify
 
-## API
-
 版本|时间|作者|注释
 ----|---|---|---
 v0.1 | 2016-05-04 | YingqiangWu | 短信验证码服务第一版
+
+## Deploy
+
+### build
+cd $GOPATH/src  
+git clone https://github.com/wuyq101/smsverify.git  
+cd smsverify  
+go build  
+
+### run
+ ./smsverify --conf=sv.conf  --port=8081  
+ 
+### Configuration
+
+key |  type | desc
+--- | ----- | ----
+redis_master_name | string | redis master name: mymaster
+redis_sentinel_addrs | string\[\] | redis sentinel addres : ["127.0.0.1:26379"]
+sms_freq_limit | int | 一个手机号一个小时之内错误次数上限，多次重新获取验证码或者多次错误验证，都受这个值现在，如果有一次正确验证，之前的错误次数会清零
+sms_code_len | int | 短信验证码的长度
+ali_app_key | string | 阿里大鱼短信的key
+ali_app_secret | string | 阿里大鱼短信的秘钥
+ali_sms_free_sign_name | string | 阿里大鱼短信的签名 
+
+
+
+## API
 
 ### 通用status说明
 
